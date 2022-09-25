@@ -1,3 +1,4 @@
+"""This file contains the fastapi app and all functions for this small microservice."""
 import os
 
 import fastapi
@@ -17,11 +18,18 @@ app = fastapi.FastAPI()
 
 
 class ClanModel(BaseModel):
+    """Base Pydantic Model to represent the most import data for a single clan."""
     clan_id: int
     clan_tag: str
 
 
-def api_get_clan_by_id(clan_id: int, api_key: str) -> tuple[ClanModel | None, str | None]:
+def api_get_clan_by_id(clan_id: int, api_key: str) -> tuple[ClanModel, None] | tuple[None, str]:
+    """
+    Look up the clan tag for a given clan id in the wargaming clan api.
+    :param clan_id: clan id to lookup clan tag for
+    :param api_key: valid api key for WG-api
+    :return: ClanModel and None if the clan could be identified by the clan id else None and an error message
+    """
     request_url = TAG_LOOKUP_BASE_URL.format(clan_id=clan_id, api_key=api_key)
     try:
         response = requests.get(request_url, timeout=TIMEOUT)
@@ -39,6 +47,12 @@ def api_get_clan_by_id(clan_id: int, api_key: str) -> tuple[ClanModel | None, st
 
 
 def api_get_clan_by_tag(clan_tag: str, api_key: str) -> tuple[ClanModel, None] | tuple[None, str]:
+    """
+    Look up the clan tag for a given clan tag in the wargaming clan api.
+    :param clan_tag: clan tag to lookup clan id for
+    :param api_key: valid api key for WG-api
+    :return: ClanModel and None if the clan could be identified by the clan tag else None and an error message
+    """
     request_url = ID_LOOKUP_BASE_URL.format(clan_tag=clan_tag, api_key=api_key)
     try:
         response = requests.get(request_url, timeout=TIMEOUT)
@@ -65,6 +79,11 @@ def api_get_clan_by_tag(clan_tag: str, api_key: str) -> tuple[ClanModel, None] |
     description="Returns clan id and clan tag for the requested clan.",
 )
 def get_clan_id(clan_tag: str) -> ClanModel:
+    """
+    api endpoint to look up the clan id.
+    :param clan_tag: clan tag to search for
+    :return: ClanModel on success else error code + message
+    """
     result, err = api_get_clan_by_tag(clan_tag=clan_tag.upper(), api_key=API_KEY)
     if err and "No clan was found" in err:
         raise fastapi.HTTPException(status_code=fastapi.status.HTTP_404_NOT_FOUND, detail=err)
@@ -83,6 +102,11 @@ def get_clan_id(clan_tag: str) -> ClanModel:
     description="Returns clan id and clan tag for the requested clan.",
 )
 def get_clan_tag(clan_id: int) -> ClanModel:
+    """
+    api endpoint to look up the clan tag.
+    :param clan_id: clan id to search for
+    :return: ClanModel on success else error code + message
+    """
     result, err = api_get_clan_by_id(clan_id=clan_id, api_key=API_KEY)
     if err and "No clan was found" in err:
         raise fastapi.HTTPException(status_code=fastapi.status.HTTP_404_NOT_FOUND, detail=err)
