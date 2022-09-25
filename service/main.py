@@ -19,6 +19,7 @@ app = fastapi.FastAPI()
 
 class ClanModel(BaseModel):
     """Base Pydantic Model to represent the most import data for a single clan."""
+
     clan_id: int
     clan_tag: str
 
