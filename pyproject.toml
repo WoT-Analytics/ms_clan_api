@@ -1,6 +1,6 @@
 [tool.isort]
 profile = "black"
-src_paths = ["code", "tests"]
+src_paths = ["service", "tests"]
 honor_noqa = true
 
 [tool.black]
@@ -12,3 +12,6 @@ max-line-length = 120
 
 [tool.pylint.string]
 check-quote-consistency = "yes"
+
+[tool.pylint.messages]
+extension-pkg-whitelist = "pydantic"
