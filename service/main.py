@@ -38,10 +38,10 @@ def api_get_clan_by_id(clan_id: int, api_key: str) -> tuple[ClanModel, None] | t
         response_json = response.json()
         if response_json["status"] != "ok":
             return None, f"API Request responded with an error: {response_json['error']['message']}"
-        tag = response_json["data"][str(clan_id)]["tag"]
+        tag = response_json["data"][str(clan_id)]
         if not tag:
             return None, f"No clan was found for this id: {clan_id}"
-        return ClanModel(clan_id=clan_id, clan_tag=tag), None
+        return ClanModel(clan_id=clan_id, clan_tag=tag["tag"]), None
     # TODO specific error handling
     except Exception as error:  # pylint: disable=broad-except
         return None, f"An Exception was raised during the api request. {error.__class__.__name__}: {error.args[0]}."

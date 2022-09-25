@@ -96,7 +96,7 @@ def test_get_clan_id_endpoint_api_not_found():
     responses.add(
         responses.GET,
         TAG_LOOKUP_BASE_URL.format(api_key="dummy", clan_id=5000000),
-        json={"status": "ok", "data": {"5000000": {"tag": None}}},
+        json={"status": "ok", "data": {"5000000": None}},
         status=200,
     )
 
