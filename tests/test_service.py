@@ -19,7 +19,7 @@ def test_get_clan_tag_endpoint_success():
         status=200,
     )
 
-    response = client.get("/clan/tag/EXAMPLE")
+    response = client.get("/clans/tag/EXAMPLE")
     assert response.status_code == 200
     assert response.json() == {"clan_tag": "EXAMPLE", "clan_id": 5000000}
 
@@ -33,7 +33,7 @@ def test_get_clan_tag_endpoint_api_error():
         status=200,
     )
 
-    response = client.get("/clan/tag/EXAMPLE")
+    response = client.get("/clans/tag/EXAMPLE")
     assert response.status_code == 400
     assert response.json() == {"detail": "API Request responded with an error: TEST_API_ERROR"}
 
@@ -47,7 +47,7 @@ def test_get_clan_tag_endpoint_api_not_found():
         status=200,
     )
 
-    response = client.get("/clan/tag/EXAMPLE")
+    response = client.get("/clans/tag/EXAMPLE")
     assert response.status_code == 404
     assert response.json() == {"detail": "No clan was found for this id: EXAMPLE"}
 
@@ -58,7 +58,7 @@ def test_get_clan_tag_endpoint_unexpected_error():
         responses.GET, ID_LOOKUP_BASE_URL.format(api_key="dummy", clan_tag="EXAMPLE"), json={"status": "ok"}, status=200
     )
 
-    response = client.get("/clan/tag/EXAMPLE")
+    response = client.get("/clans/tag/EXAMPLE")
     assert response.status_code == 400
     assert response.json() == {"detail": "An Exception was raised during the api request. KeyError: data."}
 
@@ -72,7 +72,7 @@ def test_get_clan_id_endpoint_success():
         status=200,
     )
 
-    response = client.get("/clan/id/5000000")
+    response = client.get("/clans/id/5000000")
     assert response.status_code == 200
     assert response.json() == {"clan_tag": "EXAMPLE", "clan_id": 5000000}
 
@@ -86,7 +86,7 @@ def test_get_clan_id_endpoint_api_error():
         status=200,
     )
 
-    response = client.get("/clan/id/5000000")
+    response = client.get("/clans/id/5000000")
     assert response.status_code == 400
     assert response.json() == {"detail": "API Request responded with an error: TEST_API_ERROR"}
 
@@ -100,7 +100,7 @@ def test_get_clan_id_endpoint_api_not_found():
         status=200,
     )
 
-    response = client.get("/clan/id/5000000")
+    response = client.get("/clans/id/5000000")
     assert response.status_code == 404
     assert response.json() == {"detail": "No clan was found for this id: 5000000"}
 
@@ -111,6 +111,6 @@ def test_get_clan_id_endpoint_unexpected_error():
         responses.GET, TAG_LOOKUP_BASE_URL.format(api_key="dummy", clan_id=5000000), json={"status": "ok"}, status=200
     )
 
-    response = client.get("/clan/id/5000000")
+    response = client.get("/clans/id/5000000")
     assert response.status_code == 400
     assert response.json() == {"detail": "An Exception was raised during the api request. KeyError: data."}

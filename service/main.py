@@ -71,7 +71,7 @@ def api_get_clan_by_tag(clan_tag: str, api_key: str) -> tuple[ClanModel, None] |
 
 
 @app.get(
-    "/clan/tag/{clan_tag}",
+    "/clans/tag/{clan_tag}",
     response_model=ClanModel,
     responses={
         400: {"description": "Error in Request: Request could not be answered successful."},
@@ -94,7 +94,7 @@ def get_clan_id(clan_tag: str) -> ClanModel:
 
 
 @app.get(
-    "/clan/id/{clan_id}",
+    "/clans/id/{clan_id}",
     response_model=ClanModel,
     responses={
         400: {"description": "Error in Request: Request could not be answered successful."},
